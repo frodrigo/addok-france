@@ -19,13 +19,13 @@ with open('requirements.txt', encoding='utf-8') as reqs:
     install_requires = [l for l in reqs.read().split('\n') if is_pkg(l)]
 
 setup(
-    name='addok-france',
+    name='addok-luxembourg',
     version=".".join(map(str, VERSION)),
-    description="Add France specific string processors.",
+    description="Add luxembourg specific string processors, fork of addok-france",
     long_description=long_description,
-    url='https://github.com/etalab/addok-france',
-    author='Yohan Boniface',
-    author_email='yohan.boniface@data.gouv.fr',
+    url='https://github.com/mapotempo/addok-luxembourg',
+    author='Frederic Rodrigo',
+    author_email='frederic@mapotempo.com',
     license='WTFPL',
 
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -40,10 +40,10 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
-    keywords='addok geocoding france plugin',
+    keywords='addok geocoding luxembourg plugin',
     packages=find_packages(exclude=['tests']),
     install_requires=install_requires,
     extras_require={'test': ['pytest']},
     include_package_data=True,
-    entry_points={'addok.ext': ['france=addok_france']},
+    entry_points={'addok.ext': ['luxembourg=addok_luxembourg']},
 )

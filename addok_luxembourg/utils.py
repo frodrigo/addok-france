@@ -1,6 +1,7 @@
 import re
 
 TYPES = [
+#    # France
     'av(enue)?', 'r(ue)?', 'b(oulevar)?d', 'all[ée]es?', 'impasse', 'place',
     'chemin', 'rocade', 'route', 'l[ôo]tissement', 'mont[ée]e', 'c[ôo]te',
     'clos', 'champ', 'bois', 'taillis', 'boucle', 'passage', 'domaine',
@@ -9,6 +10,11 @@ TYPES = [
     'ilot', 'berges?', 'via', 'cit[ée]', 'sent(e|ier)', 'rond[- ][Pp]oint',
     'pas(se)?', 'carrefour', 'traverse', 'giratoire', 'esplanade', 'voie',
     'chauss[ée]e',
+    # Luxembourg
+    'sentier', 'ale', 'hannert', 'in', 'val', 'neie', 'zone',
+    'all[ée]es?', 'im', 'om', 'bei', 'grand[- ]?rue', 'beim', 'impasse',
+    'chemin', 'a', 'b(oulevar)?d', 'mont[ée]e', 'av(enue)?', 'maison',
+    'place', 'cité', 'um', 'an', 'route', 'op', 'am', 'r(ue)?'
 ]
 TYPES_REGEX = '|'.join(
     map(lambda x: '[{}{}]{}'.format(x[0], x[0].upper(), x[1:]), TYPES)
@@ -24,8 +30,9 @@ FOLD = {
 }
 
 # Try to match address pattern when the search sting contains extra info (for
-# example "22 rue des Fleurs 59350 Lille" will be extracted from
-# "XYZ Ets bâtiment B 22 rue des Fleurs 59350 Lille Cedex 23").
+# example "32 Rue Notre-Dame, 2240 Luxembourg" will be extracted from
+# "XYZ Ets bâtiment B 32 Rue Notre-Dame, 2240 Luxembourg Cedex 23").
+# Note: can also be "Rue Notre-Dame 32, Luxembourg 2240"
 EXTRACT_ADDRESS_PATTERN = re.compile(
     r'(\b\d{1,4}( *(' + ORDINAL_REGEX + '))?,? +(' + TYPES_REGEX + ') .*(\d{5})?).*',  # noqa
     flags=re.IGNORECASE)
@@ -50,14 +57,14 @@ NUMBER_PATTERN = re.compile(r'\b\d{1,4}[a-z]?\b', flags=re.IGNORECASE)
 
 
 def clean_query(q):
-    q = re.sub('c(e|é)dex ?[\d]*', '', q, flags=re.IGNORECASE)
-    q = re.sub(r'\bbp ?[\d]*', '', q, flags=re.IGNORECASE)
-    q = re.sub(r'\bcs ?[\d]*', '', q, flags=re.IGNORECASE)
+#    q = re.sub('c(e|é)dex ?[\d]*', '', q, flags=re.IGNORECASE)
+#    q = re.sub(r'\bbp ?[\d]*', '', q, flags=re.IGNORECASE)
+#    q = re.sub(r'\bcs ?[\d]*', '', q, flags=re.IGNORECASE)
     q = re.sub('\d{,2}(e|[eè]me) ([eé]tage)', '', q, flags=re.IGNORECASE)
     q = re.sub(' {2,}', ' ', q, flags=re.IGNORECASE)
     q = re.sub('[ -]s/[ -]', ' sur ', q, flags=re.IGNORECASE)
     q = re.sub('[ -]s/s[ -]', ' sous ', q, flags=re.IGNORECASE)
-    q = re.sub('^lieux?[ -]?dits?\\b(?=.)', '', q, flags=re.IGNORECASE)
+#    q = re.sub('^lieux?[ -]?dits?\\b(?=.)', '', q, flags=re.IGNORECASE)
     q = q.strip()
     return q
 
@@ -141,7 +148,11 @@ def make_labels(helper, result):
     def add(labels, label):
         labels.insert(0, label)
         if housenumber:
+            # prepend house number
             label = '{} {}'.format(housenumber, label)
+            labels.insert(0, label)
+            # append house number
+            label = '{} {}'.format(label, housenumber)
             labels.insert(0, label)
 
     city = result.city
@@ -153,11 +164,14 @@ def make_labels(helper, result):
         labels = []
         label = name
         if postcode and result.type == 'municipality':
+            # append postcode
             add(labels, '{} {}'.format(label, postcode))
+            # prepend postcode
             add(labels, '{} {}'.format(postcode, label))
         add(labels, label)
         if city and city != label:
             add(labels, '{} {}'.format(label, city))
+            add(labels, '{} {}'.format(city, label))
             if postcode:
                 label = '{} {}'.format(label, postcode)
                 add(labels, label)
