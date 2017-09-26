@@ -6,7 +6,7 @@ from addok.batch import process_documents
 from addok.core import search, Result
 from addok.ds import get_document
 from addok.helpers.text import Token
-from addok_luxembourg.utils import (clean_query, extract_address, flag_housenumber,
+from addok_luxemburg.utils import (clean_query, extract_address, flag_housenumber,
                                 fold_ordinal, glue_ordinal, make_labels,
                                 remove_leading_zeros)
 

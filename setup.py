@@ -19,11 +19,11 @@ with open('requirements.txt', encoding='utf-8') as reqs:
     install_requires = [l for l in reqs.read().split('\n') if is_pkg(l)]
 
 setup(
-    name='addok-luxembourg',
+    name='addok-luxemburg',
     version=".".join(map(str, VERSION)),
-    description="Add luxembourg specific string processors, fork of addok-france",
+    description="Add luxemburg specific string processors, fork of addok-france",
     long_description=long_description,
-    url='https://github.com/mapotempo/addok-luxembourg',
+    url='https://github.com/mapotempo/addok-luxemburg',
     author='Frederic Rodrigo',
     author_email='frederic@mapotempo.com',
     license='WTFPL',
@@ -40,10 +40,10 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
-    keywords='addok geocoding luxembourg plugin',
+    keywords='addok geocoding luxemburg plugin',
     packages=find_packages(exclude=['tests']),
     install_requires=install_requires,
     extras_require={'test': ['pytest']},
     include_package_data=True,
-    entry_points={'addok.ext': ['luxembourg=addok_luxembourg']},
+    entry_points={'addok.ext': ['luxemburg=addok_luxemburg']},
 )

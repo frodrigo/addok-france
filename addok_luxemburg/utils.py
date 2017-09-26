@@ -10,7 +10,7 @@ TYPES = [
     'ilot', 'berges?', 'via', 'cit[ée]', 'sent(e|ier)', 'rond[- ][Pp]oint',
     'pas(se)?', 'carrefour', 'traverse', 'giratoire', 'esplanade', 'voie',
     'chauss[ée]e',
-    # Luxembourg
+    # Luxemburg
     'sentier', 'ale', 'hannert', 'in', 'val', 'neie', 'zone',
     'all[ée]es?', 'im', 'om', 'bei', 'grand[- ]?rue', 'beim', 'impasse',
     'chemin', 'a', 'b(oulevar)?d', 'mont[ée]e', 'av(enue)?', 'maison',
